@@ -28,4 +28,4 @@ Run the main.java class to initiate the game.
 Project is: _complete_. No further work is planned on this for the time being. 
 
 ## Contact
-Created by [@havarameen] - feel free to contact me!
+Created by [https://github.com/havarameen] - feel free to contact me!
