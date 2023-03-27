@@ -74,7 +74,7 @@ public class GameOfLifeView extends AnchorPane {
 		sizeSlider.setSnapToTicks(true);
 
 		delaySpinner = new Spinner<Integer>();
-		delaySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 2000, 5));
+		delaySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 2000, 50));
 		delaySpinner.setEditable(true);
 
 		HBox buttonBox = new HBox(startButton, stopButton, new Separator(Orientation.VERTICAL), delayLabel, delaySpinner, new Separator(Orientation.VERTICAL), clearButton, regenButton);
