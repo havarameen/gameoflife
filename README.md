@@ -15,7 +15,7 @@ This is a simple proof of concept implementation of Conway's Game of Life, writt
 - Generate random grids
 
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
+![Example screenshot](https://user-images.githubusercontent.com/26072135/228055566-b02a811f-dcb5-4173-84ea-fa4fd9d4569b.png)
 <!-- If you have screenshots you'd like to share, include them here. -->
 
 ## Setup
