@@ -1,6 +1,7 @@
 package com.havar.gameoflife;
 
 import com.havar.gameoflife.controller.GameOfLifeController;
+
 import com.havar.gameoflife.model.GameOfLifeLogic;
 import com.havar.gameoflife.view.GameOfLifeView;
 

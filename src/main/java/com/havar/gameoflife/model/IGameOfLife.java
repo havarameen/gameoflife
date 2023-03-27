@@ -13,4 +13,5 @@ public interface IGameOfLife {
     void resizeGrid(int size);
 	boolean[][] getCells();
 	void generateRandomBoard();
+	void clearBoard();
 }

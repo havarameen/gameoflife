@@ -35,6 +35,11 @@ public class GameOfLifeLogic implements IGameOfLife {
 		}
 	}
 
+	@Override
+	public void clearBoard() {
+		this.cells = new boolean[rows][columns];
+	}
+	
 	/**
 	 * Defines the next iteration of cells based on the cells of the current cells.
 	 * Applies the following logic:
