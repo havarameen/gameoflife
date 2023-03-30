@@ -93,7 +93,7 @@ public class GameOfLifeLogic implements IGameOfLife {
 	/**
 	 * Resizes the grid/board.
 	 * 
-	 * @param size The row and columnt count in a symmetrical way.
+	 * @param size The row and column count in a symmetrical way.
 	 */
 	@Override
 	public void resizeGrid(int size) {
