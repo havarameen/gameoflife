@@ -2,7 +2,7 @@
 This is a simple proof of concept implementation of Conway's Game of Life, written in Java. Shows a simple MVC implementation using interfaces for the logic layer.
 
 ## Technologies Used
-- Java 11
+- Java 19
 - JavaFX
 - JUnit 4
 - Maven (for dependency management)
