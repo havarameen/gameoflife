@@ -20,7 +20,15 @@ This is a simple proof of concept implementation of Conway's Game of Life, writt
 <!-- If you have screenshots you'd like to share, include them here. -->
 
 ## Setup
-Clone the repo and run main.java to start the application. Make sure your IDE supports Maven so dependencies can be correctly installed.
+- You'll need the JavaFX JDK since it's no longer bundled with Java. See https://gluonhq.com/products/javafx/ 
+- Clone the repo and make sure your IDE supports Maven so dependencies can be correctly installed.
+
+For IntelliJ Idea:
+- 
+
+For eclipse: 
+
+Finally: Run main.java to start the application.
 
 ## Usage
 Run the main.java class to initiate the game. 
