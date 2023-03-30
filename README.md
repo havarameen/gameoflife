@@ -9,6 +9,7 @@ This is a simple proof of concept implementation of Conway's Game of Life, writt
 
 ## Features
 - Adjustable grid size
+- Adjustable wrap around setting on board.
 - Pause/resume features
 - Draw/undraw own patterns/cells (hold left mouse button to draw, right button to clear/erase cells)
 - Adjustable framerate/delay.
