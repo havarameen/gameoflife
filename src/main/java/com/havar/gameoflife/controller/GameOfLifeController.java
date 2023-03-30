@@ -19,13 +19,12 @@ import javafx.scene.input.MouseButton;
  *
  */
 public class GameOfLifeController {
-	private IGameOfLife model;
-	private GameOfLifeView view;
+	private final IGameOfLife model;
+	private final GameOfLifeView view;
 	private ExecutorService executor;
 	private long delay = 100;
 	private boolean paused = false;
 	private volatile boolean running;
-	Task<Void> simulationTask;
 
 	public GameOfLifeController(IGameOfLife model, GameOfLifeView view) {
 		this.model = model;
@@ -185,10 +184,8 @@ public class GameOfLifeController {
 
 		view.getWrapAroundBox().setOnAction(event -> {
 			if (view.getWrapAroundBox().isSelected()) {
-				System.out.println("Wrao aropnd");
 				model.setNeighborCountingStrategy(new CountNeighborsWithWrapAroundStrategy());
 			} else {
-				System.out.println("NOPE aropnd");
 				model.setNeighborCountingStrategy(new CountNeighborsWithBordersStrategy());
 			}
 		});
