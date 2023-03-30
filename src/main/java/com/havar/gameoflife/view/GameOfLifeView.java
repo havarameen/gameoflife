@@ -1,8 +1,10 @@
 package com.havar.gameoflife.view;
 
 import javafx.geometry.Orientation;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
@@ -29,7 +31,8 @@ public class GameOfLifeView extends AnchorPane {
 	private int currentGridSize;
 	private double cellSize;
 	private Slider sizeSlider;
-    private Spinner<Integer> delaySpinner;
+	private Spinner<Integer> delaySpinner;
+	private CheckBox wrapAroundBox;
 
 	private Label sizeLabel = new Label("Grid size");
 	private Label delayLabel = new Label("Delay (ms)");
@@ -38,17 +41,17 @@ public class GameOfLifeView extends AnchorPane {
 	private Button stopButton = new Button("Stop");
 	private Button clearButton = new Button("Clear grid");
 	private Button regenButton = new Button("Regenerate grid");
-	
+
 	private boolean resizing = false;
 
 	/**
 	 * Creates a new GameOfLifeView object with the given cells.
 	 *
-	 * @param cells the cells to display
 	 */
 	public GameOfLifeView() {
 		this.currentGridSize = DEFAULT_GRID_SIZE;
-		this.cellSize = DEFAULT_GRID_WIDTH / currentGridSize; // Using a 1000x1000 pane, adjust each cellsize to make use of available space accordingly.
+		this.cellSize = DEFAULT_GRID_WIDTH / currentGridSize; // Using a 1000x1000 pane, adjust each cellsize to make
+																// use of available space accordingly.
 
 		setTopAnchor(createGridPane(), 0.0);
 		setBottomAnchor(createControlPane(), 0.0);
@@ -77,7 +80,11 @@ public class GameOfLifeView extends AnchorPane {
 		delaySpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 2000, 50));
 		delaySpinner.setEditable(true);
 
-		HBox buttonBox = new HBox(startButton, stopButton, new Separator(Orientation.VERTICAL), delayLabel, delaySpinner, new Separator(Orientation.VERTICAL), clearButton, regenButton);
+		wrapAroundBox = new CheckBox("Wrap around");
+
+		HBox buttonBox = new HBox(startButton, stopButton, new Separator(Orientation.VERTICAL), delayLabel,
+				delaySpinner, new Separator(Orientation.VERTICAL), clearButton, regenButton,
+				new Separator(Orientation.VERTICAL), wrapAroundBox);
 		buttonBox.setSpacing(10);
 		buttonBox.setAlignment(Pos.BOTTOM_CENTER);
 
@@ -118,11 +125,11 @@ public class GameOfLifeView extends AnchorPane {
 	}
 
 	/**
-	 * Manually updates a specific cell and set its to alive or dead. 
+	 * Manually updates a specific cell and set its to alive or dead.
 	 * 
-	 * @param row The x-coordinate
-	 * @param col The y-coordnate 
-	 * @param alive If it should be alive or dead (true or false). 
+	 * @param row   The x-coordinate
+	 * @param col   The y-coordnate
+	 * @param alive If it should be alive or dead (true or false).
 	 */
 	public void updateCell(int row, int col, boolean alive) {
 		if (row < 0 || row >= currentGridSize || col < 0 || col >= currentGridSize) {
@@ -193,7 +200,7 @@ public class GameOfLifeView extends AnchorPane {
 	public GridPane getGridPane() {
 		return gridPane;
 	}
-	
+
 	public Button getStartButton() {
 		return startButton;
 	}
@@ -220,5 +227,13 @@ public class GameOfLifeView extends AnchorPane {
 
 	public Button getRegenButton() {
 		return regenButton;
+	}
+
+	public CheckBox getWrapAroundBox() {
+		return wrapAroundBox;
+	}
+
+	public void setWrapAroundBox(CheckBox wrapAroundBox) {
+		this.wrapAroundBox = wrapAroundBox;
 	}
 }

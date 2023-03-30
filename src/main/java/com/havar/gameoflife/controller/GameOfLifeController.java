@@ -4,6 +4,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.havar.gameoflife.model.IGameOfLife;
+import com.havar.gameoflife.model.countstratgegies.CountNeighborsWithBordersStrategy;
+import com.havar.gameoflife.model.countstratgegies.CountNeighborsWithWrapAroundStrategy;
 import com.havar.gameoflife.view.GameOfLifeView;
 
 import javafx.application.Platform;
@@ -19,17 +21,17 @@ import javafx.scene.input.MouseButton;
 public class GameOfLifeController {
 	private IGameOfLife model;
 	private GameOfLifeView view;
-    private ExecutorService executor;
+	private ExecutorService executor;
 	private long delay = 100;
 	private boolean paused = false;
-    private volatile boolean running;
-    Task<Void> simulationTask;
-    
+	private volatile boolean running;
+	Task<Void> simulationTask;
+
 	public GameOfLifeController(IGameOfLife model, GameOfLifeView view) {
 		this.model = model;
 		this.view = view;
 		model.generateRandomBoard();
-        this.executor = Executors.newSingleThreadExecutor();
+		this.executor = Executors.newSingleThreadExecutor();
 
 		setGameOfLifeGridMouseListeners();
 		setGameOfLifeControllerListeners();
@@ -46,41 +48,42 @@ public class GameOfLifeController {
 		}
 	}
 
-    public void stop() {
-        running = false;
-        executor.shutdownNow();
-    }
+	public void stop() {
+		running = false;
+		executor.shutdownNow();
+	}
 
-	 /**
-	 * Initiate thread to run the simulation using JavaFX concurrent Task. Other options 
+	/**
+	 * Initiate thread to run the simulation using JavaFX concurrent Task. Other
+	 * options
 	 * 
 	 */
 	private void startSimulation() {
-	        Task<Void> simulationTask = new Task<>() {
-	            @Override
-	            protected Void call() throws Exception {
-	                while (running) {
-	                	if(!paused){
-	                    model.nextIteration();
-	                    updateView();
-	                	}
-	                    Thread.sleep(delay);
-	                }
-	                return null;
-	            }
-	        };
-	        simulationTask.setOnSucceeded(e -> {
-	            executor.shutdown();
-	            running = false;
-	        });
-	        executor.submit(simulationTask);
-	    }
+		Task<Void> simulationTask = new Task<>() {
+			@Override
+			protected Void call() throws Exception {
+				while (running) {
+					if (!paused) {
+						model.nextIteration();
+						updateView();
+					}
+					Thread.sleep(delay);
+				}
+				return null;
+			}
+		};
+		simulationTask.setOnSucceeded(e -> {
+			executor.shutdown();
+			running = false;
+		});
+		executor.submit(simulationTask);
+	}
 
-	    private void updateView() {
-	        boolean[][] cells = model.getCells();
-	        Platform.runLater(() -> view.updateBoard(cells));
-	    }
-	
+	private void updateView() {
+		boolean[][] cells = model.getCells();
+		Platform.runLater(() -> view.updateBoard(cells));
+	}
+
 	private void regenerateBoard() {
 		stop();
 		int newSize = view.getSizeSlider().valueProperty().intValue();
@@ -163,21 +166,31 @@ public class GameOfLifeController {
 				}
 			}
 		});
-		
+
 		view.getDelaySpinner().valueProperty().addListener((observable, oldValue, newValue) -> {
-				if (newValue != oldValue) {
-					delay = newValue;
-					stop();
-					execute();
+			if (newValue != oldValue) {
+				delay = newValue;
+				stop();
+				execute();
 			}
 		});
 
 		view.getClearButton().setOnAction(event -> {
 			model.clearBoard();
 		});
-		
+
 		view.getRegenButton().setOnAction(event -> {
 			regenerateBoard();
+		});
+
+		view.getWrapAroundBox().setOnAction(event -> {
+			if (view.getWrapAroundBox().isSelected()) {
+				System.out.println("Wrao aropnd");
+				model.setNeighborCountingStrategy(new CountNeighborsWithWrapAroundStrategy());
+			} else {
+				System.out.println("NOPE aropnd");
+				model.setNeighborCountingStrategy(new CountNeighborsWithBordersStrategy());
+			}
 		});
 	}
 }

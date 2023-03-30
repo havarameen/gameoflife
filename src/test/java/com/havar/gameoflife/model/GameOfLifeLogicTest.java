@@ -9,6 +9,8 @@ import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.havar.gameoflife.model.countstratgegies.CountNeighborsWithWrapAroundStrategy;
+
 /**
  * Tests for the GameOfLifeLogic class.
  */
@@ -17,7 +19,7 @@ class GameOfLifeLogicTest {
     @Test
     void testGenerateRandomBoard() {
         // Check that board is generated with random values, chances of this not happening is 1 in 100 000 000.  
-    	GameOfLifeLogic gameOfLife = new GameOfLifeLogic(10000, 10000);
+    	GameOfLifeLogic gameOfLife = new GameOfLifeLogic(1000, 1000);
     	gameOfLife.generateRandomBoard();
         boolean[][] cells = gameOfLife.getCells();
         boolean anyTrue = false;
@@ -317,10 +319,12 @@ class GameOfLifeLogicTest {
 		assertEquals(8, countMiddle);
 		assertEquals(1, countBottomRight);
 
-		countTopLeft = gameOflife.countNeighborsWrapped(0, 0);
-		countMiddle = gameOflife.countNeighborsWrapped(2, 2);
-		countBottomRight = gameOflife.countNeighborsWrapped(4, 4);
-		int countAlmostTopRight = gameOflife.countNeighborsWrapped(1, 4);
+		gameOflife.setNeighborCountingStrategy(new CountNeighborsWithWrapAroundStrategy());
+		
+		countTopLeft = gameOflife.countNeighbors(0, 0);
+		countMiddle = gameOflife.countNeighbors(2, 2);
+		countBottomRight = gameOflife.countNeighbors(4, 4);
+		int countAlmostTopRight = gameOflife.countNeighbors(1, 4);
 
 		assertEquals(4, countTopLeft);
 		assertEquals(8, countMiddle);

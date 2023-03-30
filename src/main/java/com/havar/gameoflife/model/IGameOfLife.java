@@ -1,5 +1,7 @@
 package com.havar.gameoflife.model;
 
+import com.havar.gameoflife.model.countstratgegies.NeighborCountingStrategy;
+
 /**
  * Interface class for Havars Game of Life. 
  * 
@@ -14,4 +16,5 @@ public interface IGameOfLife {
 	boolean[][] getCells();
 	void generateRandomBoard();
 	void clearBoard();
+	void setNeighborCountingStrategy(NeighborCountingStrategy strategy);
 }

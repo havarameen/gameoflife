@@ -2,6 +2,9 @@ package com.havar.gameoflife.model;
 
 import java.util.Random;
 
+import com.havar.gameoflife.model.countstratgegies.CountNeighborsWithBordersStrategy;
+import com.havar.gameoflife.model.countstratgegies.NeighborCountingStrategy;
+
 /**
  * The model class for Havars Game of Life.
  * 
@@ -12,6 +15,7 @@ public class GameOfLifeLogic implements IGameOfLife {
 	private int rows, columns;
 	private boolean[][] cells;
 	private boolean[][] nextIteration;
+	private NeighborCountingStrategy neighborCountingStrategy;
 	private Random random = new Random();
 
 	public GameOfLifeLogic(int rows, int columns) {
@@ -19,6 +23,7 @@ public class GameOfLifeLogic implements IGameOfLife {
 		this.columns = columns;
 		this.cells = new boolean[rows][columns];
 		this.nextIteration = new boolean[rows][columns];
+		neighborCountingStrategy = new CountNeighborsWithBordersStrategy();
 	}
 
 	/**
@@ -39,20 +44,20 @@ public class GameOfLifeLogic implements IGameOfLife {
 	public void clearBoard() {
 		this.cells = new boolean[rows][columns];
 	}
-	
+
 	/**
 	 * Defines the next iteration of cells based on the cells of the current cells.
 	 * Applies the following logic:
 	 * 
-	 * 1: Any live cell with two or three live neighbours survives. 
-	 * 2: Any dead cell with three live neighbours becomes a live cell. 
-	 * 3: All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+	 * 1: Any live cell with two or three live neighbours survives. 2: Any dead cell
+	 * with three live neighbours becomes a live cell. 3: All other live cells die
+	 * in the next generation. Similarly, all other dead cells stay dead.
 	 */
 	@Override
 	public boolean[][] nextIteration() {
 		for (int i = 0; i < columns; i++) {
 			for (int j = 0; j < rows; j++) {
-				
+
 				int aliveNeighbors = countNeighbors(i, j);
 
 				if (cells[i][j] == true && (aliveNeighbors == 2 || aliveNeighbors == 3)) { // Rule 1
@@ -73,9 +78,8 @@ public class GameOfLifeLogic implements IGameOfLife {
 	 * Counts the amount of adjacent cells that are alive. Excludes itself and skips
 	 * cells tha would fall out of bounds of the defined table.
 	 * 
-	 * [ (-1,-1), (0,-1), (1,-1) ]
-	 * [ (-1, 0), ( X ),  (1, 0) ]
-	 * [ (-1, 1), (0, 1), (1, 1) ]
+	 * [ (-1,-1), (0,-1), (1,-1) ] [ (-1, 0), ( X ), (1, 0) ] [ (-1, 1), (0, 1), (1,
+	 * 1) ]
 	 * 
 	 * @param rowPosition The row position to check (x-coordinate)
 	 * @param colPosition The column position to check (y-coordinate)
@@ -83,54 +87,7 @@ public class GameOfLifeLogic implements IGameOfLife {
 	 */
 	@Override
 	public int countNeighbors(int rowPosition, int colPosition) {
-		int count = 0;
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				int r = rowPosition + i;
-				int c = colPosition + j;
-			
-				// Make sure to stay within bounds of the table, don't bother checking outside
-				// it.
-				if (r >= 0 && r < rows && c >= 0 && c < columns && cells[r][c]) {
-					count++;
-				}
-			}
-		}
-		if (cells[rowPosition][colPosition]) {
-			count--; // Don't include the cell itself
-		}
-		return count;
-	}
-
-	/**
-	 * Counts the amount of adjacent cells that are alive. Excludes itself, but include cells that 
-	 * would fall outside the bounds of the defined table. In those cases, wrap around to the 
-	 * other side instead.
-	 * 
-	 * [ (-1,-1), (0,-1), (1,-1) ]
-	 * [ (-1, 0), ( X ),  (1, 0) ]
-	 * [ (-1, 1), (0, 1), (1, 1) ]
-	 * 
-	 * @param rowPosition The row position to check (x-coordinate)
-	 * @param colPosition The column position to check (y-coordinate)
-	 * @return
-	 */
-	public int countNeighborsWrapped(int rowPosition, int colPosition) {
-		int count = 0;
-		for (int i = -1; i <= 1; i++) {
-			for (int j = -1; j <= 1; j++) {
-				int r = (rowPosition + i + rows) % rows;
-				int c = (colPosition + j + columns) % columns;
-
-				if (cells[r][c]) {
-					count++;
-				}
-			}
-		}
-		if (cells[rowPosition][colPosition]) {
-			count--; // Don't include the cell itself
-		}
-	    return count;
+		return neighborCountingStrategy.countNeighbors(rowPosition, colPosition, cells, rows, columns);
 	}
 
 	/**
@@ -143,11 +100,11 @@ public class GameOfLifeLogic implements IGameOfLife {
 		if (size <= 0) {
 			throw new IllegalArgumentException("Size must be positive");
 		}
-		
+
 		if (size == rows) {
-			return; 
+			return;
 		}
-		
+
 		boolean[][] newCells = new boolean[size][size];
 		nextIteration = new boolean[size][size];
 		cells = newCells;
@@ -165,6 +122,15 @@ public class GameOfLifeLogic implements IGameOfLife {
 	}
 
 	public void setCellState(int i, int j, boolean b) {
-		cells[i][j] = b;		
+		cells[i][j] = b;
+	}
+
+	public NeighborCountingStrategy getNeighborCountingStrategy() {
+		return neighborCountingStrategy;
+	}
+
+	@Override
+	public void setNeighborCountingStrategy(NeighborCountingStrategy neighborCountingStrategy) {
+		this.neighborCountingStrategy = neighborCountingStrategy;
 	}
 }
