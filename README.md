@@ -24,9 +24,14 @@ This is a simple proof of concept implementation of Conway's Game of Life, writt
 - Clone the repo and make sure your IDE supports Maven so dependencies can be correctly installed.
 
 For IntelliJ Idea:
-- 
+- Go to File -> Project Structure -> Project Settings and check the modules once you have the maven dependencies downloadd. 
+(https://user-images.githubusercontent.com/26072135/228968131-bcdba372-db32-46df-9745-a39b3ac545c3.png)
+
+- Go to Run -> Edit Configuration -> Modify Options -> Set VM arguments and add the items shown in the screenshot. Make sure the JavaFX path points to your own JavaFX Lib path. 
+(https://user-images.githubusercontent.com/26072135/228968237-62a79be6-28f7-4cb3-8ef8-d3df1940ac67.png)
 
 For eclipse: 
+Nothing in particular, make sure dependencies show correctly in build configuration for the project.
 
 Finally: Run main.java to start the application.
 
