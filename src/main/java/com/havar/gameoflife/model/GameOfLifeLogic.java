@@ -73,9 +73,9 @@ public class GameOfLifeLogic implements IGameOfLife {
 	 * Counts the amount of adjacent cells that are alive. Excludes itself and skips
 	 * cells tha would fall out of bounds of the defined table.
 	 * 
- 	 * [(-1,-1), (-1,0), (-1,1)]
-	 * [(0,-1) ,  ( X ),  (0,1)]
-	 * [(1,-1) ,  (1,0),  (1,1)]
+	 * [ (-1,-1), (0,-1), (1,-1) ]
+	 * [ (-1, 0), ( X ),  (1, 0) ]
+	 * [ (-1, 1), (0, 1), (1, 1) ]
 	 * 
 	 * @param rowPosition The row position to check (x-coordinate)
 	 * @param colPosition The column position to check (y-coordinate)
@@ -100,6 +100,37 @@ public class GameOfLifeLogic implements IGameOfLife {
 			count--; // Don't include the cell itself
 		}
 		return count;
+	}
+
+	/**
+	 * Counts the amount of adjacent cells that are alive. Excludes itself, but include cells that 
+	 * would fall outside the bounds of the defined table. In those cases, wrap around to the 
+	 * other side instead.
+	 * 
+	 * [ (-1,-1), (0,-1), (1,-1) ]
+	 * [ (-1, 0), ( X ),  (1, 0) ]
+	 * [ (-1, 1), (0, 1), (1, 1) ]
+	 * 
+	 * @param rowPosition The row position to check (x-coordinate)
+	 * @param colPosition The column position to check (y-coordinate)
+	 * @return
+	 */
+	public int countNeighborsWrapped(int rowPosition, int colPosition) {
+		int count = 0;
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				int r = (rowPosition + i + rows) % rows;
+				int c = (colPosition + j + columns) % columns;
+
+				if (cells[r][c]) {
+					count++;
+				}
+			}
+		}
+		if (cells[rowPosition][colPosition]) {
+			count--; // Don't include the cell itself
+		}
+	    return count;
 	}
 
 	/**

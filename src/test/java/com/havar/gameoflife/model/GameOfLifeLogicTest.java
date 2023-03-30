@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -289,4 +290,41 @@ class GameOfLifeLogicTest {
 	    assertTrue(cells[9][8]); 
 	    assertTrue(cells[8][8]);
 	}
-}
+	
+	/**
+	 * 
+	 * Using a wrap around function to count neighbors instead.
+	 * 
+	 */
+	@Test
+	@Ignore
+	public void testCountNeighborsAssumingWrapAround() {
+        boolean[][] cells = {
+            {true,  true,  false, false, true},
+            {false, true,  true,  true,  false},
+            {false, true,  false, true,  true},
+            {false, true,  true,  true,  false},
+            {true,  false, false, false, false}
+		};
+		GameOfLifeLogic gameOflife = new GameOfLifeLogic(5, 5);
+		gameOflife.setCells(cells);
+
+		int countTopLeft = gameOflife.countNeighbors(0, 0);
+		int countMiddle = gameOflife.countNeighbors(2, 2);
+		int countBottomRight = gameOflife.countNeighbors(4, 4);
+
+		assertEquals(2, countTopLeft);
+		assertEquals(8, countMiddle);
+		assertEquals(1, countBottomRight);
+
+		countTopLeft = gameOflife.countNeighborsWrapped(0, 0);
+		countMiddle = gameOflife.countNeighborsWrapped(2, 2);
+		countBottomRight = gameOflife.countNeighborsWrapped(4, 4);
+		int countAlmostTopRight = gameOflife.countNeighborsWrapped(1, 4);
+
+		assertEquals(4, countTopLeft);
+		assertEquals(8, countMiddle);
+		assertEquals(4, countBottomRight);
+		assertEquals(5, countAlmostTopRight);
+		}
+	}
